@@ -13,7 +13,7 @@
 ## 仓库内容
 
 - [scripts/run-aosp-emu64a-pkg.sh](./scripts/run-aosp-emu64a-pkg.sh)
-  macOS 端脚本，拉取 `emu_img_zip`、更新 AVD、启动模拟器
+  macOS 端脚本，拉取 `emu_img_zip`、自建或更新 AVD、启动模拟器
 - [scripts/vm-build-emu64a-package.sh](./scripts/vm-build-emu64a-package.sh)
   VM 端脚本，在 `aosp-builder` 中编译并执行 `m emu_img_zip`
 - [scripts/macos-rebuild-package-and-run.sh](./scripts/macos-rebuild-package-and-run.sh)

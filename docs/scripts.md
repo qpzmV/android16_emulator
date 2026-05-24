@@ -62,7 +62,7 @@
 - 解压到 `artifacts/emu64a-avd/sysimg-package`
 - 检查 `arm64-v8a` 目录里是否存在 `kernel-ranchu`、`ramdisk.img`、`system.img`、`vendor.img`
 - 在包根目录补符号链接，以兼容本次 emulator 对 `systemPath` 的解析方式
-- 复用 `~/.android/avd/test_baklava.avd` 作为模板创建 `AOSP_emu64a_pkg`
+- 直接在 `~/.android/avd/` 下自建 `AOSP_emu64a_pkg`，不依赖任何已有模板 AVD
 - 把 `config.ini` 的 `image.sysdir.1` 指向打包后的 `arm64-v8a/`
 - 启动 emulator
 - 使用 `adb` 等待设备上线并确认 `sys.boot_completed=1`

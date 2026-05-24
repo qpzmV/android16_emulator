@@ -199,6 +199,12 @@ m emu_img_zip -j16
 2. 把 `emu_img_zip` 解出来
 3. 让新 AVD 指向这套 packaged system image
 
+后来为了让仓库脚本更可复用，又把这一步进一步简化成：
+
+1. 不依赖任何已有模板 AVD
+2. 由脚本直接在 `~/.android/avd/` 下写出 `AOSP_emu64a_pkg.ini` 和 `config.ini`
+3. 再把 `image.sysdir.1` 指到打包后的 `arm64-v8a/` 目录
+
 ## 9. 为什么还额外做了目录兼容处理
 
 理论上，解开的 `arm64-v8a/` 目录已经很标准了。

@@ -67,6 +67,7 @@ need_file "$SYSIMG_DIR/ramdisk.img"
 need_file "$SYSIMG_DIR/system.img"
 need_file "$SYSIMG_DIR/vendor.img"
 need_file "$SYSIMG_DIR/build.prop"
+need_file "$SYSIMG_DIR/source.properties"
 
 # This emulator build may resolve one level above the real abi directory.
 # Mirror the key files at the package root so both lookup patterns work.
@@ -84,30 +85,55 @@ need_file "$SYSIMG_DIR/build.prop"
 )
 
 AVD_HOME="$HOME/.android/avd"
-BASE_AVD_DIR="$AVD_HOME/test_baklava.avd"
-BASE_AVD_INI="$AVD_HOME/test_baklava.ini"
 AVD_DIR="$AVD_HOME/${AVD_NAME}.avd"
 AVD_INI="$AVD_HOME/${AVD_NAME}.ini"
+API_LEVEL="$(grep '^AndroidVersion.ApiLevel=' "$SYSIMG_DIR/source.properties" | cut -d= -f2)"
+TAG_ID="$(grep '^SystemImage.TagId=' "$SYSIMG_DIR/source.properties" | cut -d= -f2)"
+TAG_DISPLAY="$(grep '^SystemImage.TagDisplay=' "$SYSIMG_DIR/source.properties" | cut -d= -f2-)"
 
-[[ -d "$BASE_AVD_DIR" ]] || die "Template AVD missing: $BASE_AVD_DIR"
-[[ -f "$BASE_AVD_INI" ]] || die "Template AVD ini missing: $BASE_AVD_INI"
+[[ -n "$API_LEVEL" ]] || die "Failed to read AndroidVersion.ApiLevel from $SYSIMG_DIR/source.properties"
+[[ -n "$TAG_ID" ]] || die "Failed to read SystemImage.TagId from $SYSIMG_DIR/source.properties"
+[[ -n "$TAG_DISPLAY" ]] || die "Failed to read SystemImage.TagDisplay from $SYSIMG_DIR/source.properties"
 
 if [[ ! -d "$AVD_DIR" ]]; then
-  echo "Creating AVD from template ..."
-  cp -R "$BASE_AVD_DIR" "$AVD_DIR"
-  cp "$BASE_AVD_INI" "$AVD_INI"
+  echo "Creating AVD directory from scratch ..."
+  mkdir -p "$AVD_DIR"
 fi
 
-perl -0pi -e "s#^path *=.*#path = ${AVD_DIR}#m; s#^path\\.rel *=.*#path.rel = avd/${AVD_NAME}.avd#m" "$AVD_INI"
+cat > "$AVD_INI" <<EOF
+avd.ini.encoding = UTF-8
+target = android-${API_LEVEL}
+path = ${AVD_DIR}
+path.rel = avd/${AVD_NAME}.avd
+EOF
 
-set_config_value "$AVD_DIR/config.ini" "image.sysdir.1" "${PKG_DIR}/arm64-v8a/"
-set_config_value "$AVD_DIR/config.ini" "abi.type" "arm64-v8a"
-set_config_value "$AVD_DIR/config.ini" "hw.cpu.arch" "arm64"
-set_config_value "$AVD_DIR/config.ini" "tag.id" "default"
-set_config_value "$AVD_DIR/config.ini" "tag.display" "Default"
-set_config_value "$AVD_DIR/config.ini" "hw.ramSize" "$MEMORY_MB"
-set_config_value "$AVD_DIR/config.ini" "vm.heapSize" "576"
-set_config_value "$AVD_DIR/config.ini" "disk.dataPartition.size" "6442450944"
+CONFIG_INI="$AVD_DIR/config.ini"
+if [[ ! -f "$CONFIG_INI" ]]; then
+  cat > "$CONFIG_INI" <<'EOF'
+avd.ini.encoding = UTF-8
+hw.cpu.ncore = 4
+hw.device.manufacturer = Google
+hw.device.name = pixel_6
+hw.gpu.enabled = yes
+hw.gpu.mode = host
+hw.lcd.density = 420
+hw.lcd.height = 2400
+hw.lcd.width = 1080
+hw.useext4 = yes
+PlayStore.enabled = no
+EOF
+fi
+
+set_config_value "$CONFIG_INI" "image.sysdir.1" "${PKG_DIR}/arm64-v8a/"
+set_config_value "$CONFIG_INI" "abi.type" "arm64-v8a"
+set_config_value "$CONFIG_INI" "hw.cpu.arch" "arm64"
+set_config_value "$CONFIG_INI" "hw.cpu.ncore" "$CORES"
+set_config_value "$CONFIG_INI" "tag.id" "$TAG_ID"
+set_config_value "$CONFIG_INI" "tag.display" "$TAG_DISPLAY"
+set_config_value "$CONFIG_INI" "target" "android-${API_LEVEL}"
+set_config_value "$CONFIG_INI" "hw.ramSize" "$MEMORY_MB"
+set_config_value "$CONFIG_INI" "vm.heapSize" "576"
+set_config_value "$CONFIG_INI" "disk.dataPartition.size" "6442450944"
 
 EMULATOR_ARGS=(
   "@${AVD_NAME}"

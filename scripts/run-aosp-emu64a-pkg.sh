@@ -133,7 +133,7 @@ set_config_value "$CONFIG_INI" "tag.display" "$TAG_DISPLAY"
 set_config_value "$CONFIG_INI" "target" "android-${API_LEVEL}"
 set_config_value "$CONFIG_INI" "hw.ramSize" "$MEMORY_MB"
 set_config_value "$CONFIG_INI" "vm.heapSize" "576"
-set_config_value "$CONFIG_INI" "disk.dataPartition.size" "6442450944"
+set_config_value "$CONFIG_INI" "disk.dataPartition.size" "17179869184"
 
 EMULATOR_ARGS=(
   "@${AVD_NAME}"

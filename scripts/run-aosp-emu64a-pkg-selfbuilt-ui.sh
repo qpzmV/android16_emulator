@@ -10,15 +10,18 @@ WORK_DIR="${WORK_DIR:-$REPO_ROOT/artifacts/emu64a-avd}"
 PKG_DIR="${PKG_DIR:-$WORK_DIR/sysimg-package}"
 AVD_NAME="${AVD_NAME:-AOSP_emu64a_pkg}"
 
-EMULATOR_BIN="${EMULATOR_BIN:-/opt/homebrew/share/android-commandlinetools/emulator/emulator}"
+EMULATOR_BIN="${EMULATOR_BIN:-/Users/robin/workspace/my_android_emulator/my_emulator/external/qemu/objs/distribution/emulator/emulator}"
 ADB_BIN="${ADB_BIN:-/opt/homebrew/share/android-commandlinetools/platform-tools/adb}"
 JAVA_HOME="${JAVA_HOME:-/opt/homebrew/opt/openjdk@17}"
+ANDROID_SDK_ROOT="${ANDROID_SDK_ROOT:-/opt/homebrew/share/android-commandlinetools}"
 
-GPU_MODE="${GPU_MODE:-swiftshader_indirect}"
+GPU_MODE="${GPU_MODE:-host}"
 MEMORY_MB="${MEMORY_MB:-4096}"
 CORES="${CORES:-4}"
 WIPE_DATA="${WIPE_DATA:-1}"
 WAIT_FOR_BOOT="${WAIT_FOR_BOOT:-1}"
+NO_WINDOW="${NO_WINDOW:-0}"
+EMULATOR_FEATURES="${EMULATOR_FEATURES:--VulkanVirtualQueue,-VulkanRobustness,-VulkanQueueSubmitWithCommands,-HostComposition,-VirtioGpuNext,-VulkanIgnoredHandles,-VulkanAstcLdrEmulation}"
 
 die() {
   echo "ERROR: $*" >&2
@@ -43,6 +46,7 @@ set_config_value() {
 [[ -x "$EMULATOR_BIN" ]] || die "Emulator not found at $EMULATOR_BIN"
 [[ -x "$ADB_BIN" ]] || die "adb not found at $ADB_BIN"
 [[ -x "$JAVA_HOME/bin/java" ]] || die "Java not found at $JAVA_HOME/bin/java"
+[[ -d "$ANDROID_SDK_ROOT/platform-tools" ]] || die "ANDROID_SDK_ROOT is not a valid SDK root: $ANDROID_SDK_ROOT"
 command -v orb >/dev/null 2>&1 || die "orb not found"
 
 mkdir -p "$WORK_DIR"
@@ -69,8 +73,6 @@ need_file "$SYSIMG_DIR/vendor.img"
 need_file "$SYSIMG_DIR/build.prop"
 need_file "$SYSIMG_DIR/source.properties"
 
-# This emulator build may resolve one level above the real abi directory.
-# Mirror the key files at the package root so both lookup patterns work.
 (
   cd "$PKG_DIR"
   ln -sfn arm64-v8a/kernel-ranchu kernel-ranchu
@@ -148,6 +150,10 @@ if [[ "$WIPE_DATA" == "1" ]]; then
   EMULATOR_ARGS=(-wipe-data "${EMULATOR_ARGS[@]}")
 fi
 
+if [[ "$NO_WINDOW" == "1" ]]; then
+  EMULATOR_ARGS=(-no-window "${EMULATOR_ARGS[@]}")
+fi
+
 echo "Killing old emulator instances ..."
 "$ADB_BIN" devices 2>/dev/null | awk '/^emulator-/{print $1}' | while read -r serial; do
   "$ADB_BIN" -s "$serial" emu kill >/dev/null 2>&1 || true
@@ -155,7 +161,7 @@ done
 sleep 2
 
 echo "Launching $AVD_NAME ..."
-JAVA_HOME="$JAVA_HOME" "$EMULATOR_BIN" "${EMULATOR_ARGS[@]}" >/tmp/${AVD_NAME}.log 2>&1 &
+JAVA_HOME="$JAVA_HOME" ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" ANDROID_EMULATOR_FEATURES="$EMULATOR_FEATURES" "$EMULATOR_BIN" "${EMULATOR_ARGS[@]}" >/tmp/${AVD_NAME}.log 2>&1 &
 EMU_PID=$!
 echo "Emulator PID: $EMU_PID"
 

@@ -55,6 +55,118 @@
 - 不是“无脑删除清单”
 - 其中有些目录理论上很可能无关，但实际依赖关系复杂，删之前最好先备份或克隆一份实验树
 
+## 这次已经真实验证出来的结果
+
+下面这些结论不是猜测，而是已经在 `aosp-builder` 里真实执行过：
+
+- `lunch sdk_phone64_arm64 trunk_staging userdebug`
+- `m -j16`
+- `m emu_img_zip -j16`
+
+并且最终再次通过基线复验。
+
+### 当前稳定可移走集合
+
+当前已经稳定保留在：
+
+```text
+/home/robin/aosp/_trim_staging
+```
+
+里的目录大约是 `41.4G`：
+
+```text
+developers
+device/linaro
+device/amlogic
+device/google_car
+device/google/akita-kernels
+device/google/bluejay-kernels
+device/google/caimito-kernels
+device/google/comet-kernels
+device/google/felix-kernels
+device/google/lynx-kernels
+device/google/pantah-kernels
+device/google/raviole-kernels
+device/google/shusky-kernels
+device/google/tangorpro-kernels
+device/google/caimito
+device/google/pantah
+device/google/tangorpro
+device/google/comet
+device/google/shusky
+device/google/raviole
+device/google/akita
+device/google/lynx
+device/google/felix
+device/google/bluejay
+device/google/trout
+```
+
+这代表：
+
+- 就这次目标而言，这些目录目前可以移出源码树外
+- 并且仍能继续编 `sdk_phone64_arm64`
+- 也仍能继续跑 `m emu_img_zip`
+
+### 已验证不能整块移走的目录
+
+下面这些目录已经试过，真实失败，所以当前不应整块移走：
+
+```text
+cts
+test
+platform_testing
+development
+device/sample
+device/google/cuttlefish
+device/google/cuttlefish_vmm
+device/google/cuttlefish_prebuilts
+prebuilts/android-emulator
+prebuilts/remoteexecution-client
+prebuilts/abi-dumps
+```
+
+对应的真实失败线索包括：
+
+```text
+undefined module "csuite_test"
+undefined module "cts_defaults"
+undefined module "platform_tools_version"
+missing device/sample/etc/apns-full-conf.xml
+undefined module "cuttlefish_base"
+undefined module "cuttlefish_guest_only"
+assemble_cvd requires non-existent HOST module bootloader_*
+undefined module "trusty_qemu_shared_files"
+undefined module "rewrapper"
+undefined module "vndk_abi_dump_zip"
+```
+
+### 已知但可接受的噪声
+
+当下面这些目录被移走时：
+
+```text
+device/google/caimito
+device/google/pantah
+device/google/tangorpro
+device/google/comet
+device/google/shusky
+device/google/raviole
+device/google/akita
+device/google/lynx
+device/google/felix
+device/google/bluejay
+```
+
+`ckati` 阶段会出现很多：
+
+```text
+find: 'device/google/.../overlay/.../values/*': No such file or directory
+```
+
+但这在本次实验里并不阻止最终构建通过，所以应视为“需要知晓的噪声”，不是立即恢复这些目录的依据。
+
 ## 分级说明
 
 ### A 级：高概率与当前目标弱相关，可优先研究
@@ -90,6 +202,9 @@
 风险：
 - 如果你后面要做平台测试或交付兼容性验证，就不能删
 
+这次实测：
+- 不能整块移走
+
 #### `test` — `358M`
 
 建议级别：
@@ -97,6 +212,9 @@
 
 理由：
 - 测试树通常不影响正常平台镜像构建
+
+这次实测：
+- 不能整块移走
 
 #### `platform_testing` — `174M`
 
@@ -106,6 +224,9 @@
 理由：
 - 偏平台测试与自动化
 - 不属于正常 `sdk_phone64_arm64` 镜像主产物链
+
+这次实测：
+- 不能整块移走
 
 #### `development` — `390M`
 
@@ -118,6 +239,9 @@
 风险：
 - 某些模块可能引用其中工具或模板，删除前要验证
 
+这次实测：
+- 不能整块移走
+
 #### `developers` — `402M`
 
 建议级别：
@@ -125,6 +249,9 @@
 
 理由：
 - 大多偏示例、文档、开发者资源
+
+这次实测：
+- 可移走
 
 ## B 级：有机会精简，但必须验证
 
@@ -161,6 +288,9 @@
 风险：
 - 某些 framework API 检查、兼容性检查目标可能用到
 
+这次实测：
+- 不能整块移走
+
 #### `prebuilts/sdk` — `5.0G`
 
 建议级别：
@@ -185,6 +315,9 @@
 风险：
 - 如果未来想在 VM 里本地跑 emulator 或依赖相关 host 工具，则不能删
 
+这次实测：
+- 不能整块移走
+
 #### `prebuilts/remoteexecution-client` — `1.6G`
 
 建议级别：
@@ -195,6 +328,9 @@
 
 风险：
 - 某些构建环境会静态引用相关工具
+
+这次实测：
+- 不能整块移走
 
 #### `prebuilts/clang` — `14G`
 
@@ -311,6 +447,12 @@
 风险：
 - 有些通用 mk/bp 继承关系可能跨目录存在
 
+这次实测：
+
+- `device/linaro` 可移走
+- `device/amlogic` 可移走
+- `device/sample` 不能移走
+
 ## C 级：不建议动
 
 ### `device/generic` — `7.6M`
@@ -341,21 +483,16 @@
 
 如果你的目标是“在可控风险下试着把 121G 往下压”，建议按这个顺序研究：
 
-1. `device/google` — `42G`
-2. `cts` — `2.0G`
-3. `test` — `358M`
-4. `platform_testing` — `174M`
-5. `developers` — `402M`
-6. `development` — `390M`
-7. `device/linaro` — `779M`
-8. `device/amlogic` — `102M`
-9. `device/sample` — `12M`
-10. `prebuilts/abi-dumps` — `3.9G`
-11. `prebuilts/android-emulator` — `1.8G`
-12. `prebuilts/remoteexecution-client` — `1.6G`
-13. `external/deqp` — `1.6G`
-14. `external/google-cloud-java` — `1.1G`
-15. `external/tensorflow` / `pytorch` / `executorch`
+1. `device/google/*-kernels` 这类大块 kernel 子目录
+2. `device/google` 里的具体机型目录，避免先动 `cuttlefish*` 和 `gs-common`
+3. `developers`
+4. `device/linaro`
+5. `device/amlogic`
+6. `device/google_car`
+7. `external/deqp`
+8. `external/google-cloud-java`
+9. `external/tensorflow` / `pytorch` / `executorch`
+10. 更细粒度地拆 `prebuilts/sdk` 或 `prebuilts/module_sdk`
 
 ## 我对“能删到多少”的判断
 
@@ -403,4 +540,4 @@
 - 最值得谨慎验证的，是 `prebuilts/*` 和大型 `external/*`
 - 最不该先动的，是 `device/generic`、`frameworks`、`system`、`build`、`art`、`bionic`、`hardware`
 
-如果你愿意，我下一步可以继续基于这份文档，帮你整理出一版“实验性删除顺序清单”，按最小风险一批一批列出建议删除顺序。 
+如果你下一步继续压缩，最值得继续试的是 `external/` 和更细粒度拆分的 `prebuilts/sdk` / `prebuilts/module_sdk`，因为当前这轮已经把 `device/` 里最有价值的一大块先拿下了。

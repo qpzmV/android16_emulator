@@ -115,12 +115,13 @@ if [[ ! -f "$CONFIG_INI" ]]; then
 avd.ini.encoding = UTF-8
 hw.cpu.ncore = 4
 hw.device.manufacturer = Google
-hw.device.name = pixel_6
+hw.device.name = Nexus 6P
 hw.gpu.enabled = yes
 hw.gpu.mode = host
 hw.lcd.density = 420
 hw.lcd.height = 2400
 hw.lcd.width = 1080
+hw.display.cutout = none
 hw.useext4 = yes
 PlayStore.enabled = no
 EOF
@@ -136,6 +137,7 @@ set_config_value "$CONFIG_INI" "target" "android-${API_LEVEL}"
 set_config_value "$CONFIG_INI" "hw.ramSize" "$MEMORY_MB"
 set_config_value "$CONFIG_INI" "vm.heapSize" "576"
 set_config_value "$CONFIG_INI" "disk.dataPartition.size" "17179869184"
+set_config_value "$CONFIG_INI" "hw.display.cutout" "none"
 
 EMULATOR_ARGS=(
   "@${AVD_NAME}"

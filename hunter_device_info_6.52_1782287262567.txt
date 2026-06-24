@@ -1,0 +1,99 @@
+Version:6.52
+
+(release/35)(2211133C/Xiaomi)
+[OS3.0.307.0.WMCCNXM]
+Xiaomi/fuxi/fuxi:16/BP2A.250605.031.A3/OS3.0.307.0.WMCCNXM:user/release-keys
+SECURITY_PATCH:2025-03-05
+
+[]
+
+[]
+
+YouAreLoser.bD@f8a72415
+YouAreLoser.cD@f89908d3
+{title=Hunter Main Thread Event(28) 
+ risk=[application static start <com.zhenxi.hunter:hunter_main_process>(0), check hide api (0), application static start [com.zhenxi.hunter:hunter_main_process](0), application static start load lib (1), com.zhenxi.hunter:hunter_main_process JNI_OnLoad init base class success com.zhenxi.hunter:hunter_main_process(1), com.zhenxi.hunter:hunter_main_process JNI_OnLoad init base success -> [0](0), com.zhenxi.hunter:hunter_main_process JNI_OnLoad install_check_arch_seccomp success -> [0](0), com.zhenxi.hunter:hunter_main_process JNI_OnLoad install seccomp -> [0](0), com.zhenxi.hunter:hunter_main_process JNI_OnLoad check unidbg -> [0](0), com.zhenxi.hunter:hunter_main_process JNI_OnLoad start InitProperties  -> [0](0), com.zhenxi.hunter:hunter_main_process JNI_OnLoad init finish success   -> [0](0), anti hide api (9), App went to ON_CREATE , com.zhenxi.hunter:hunter_main_process JNI_OnLoad init lib path natives success -> [82](27), anti accessibility server (155), App went to ON_START , App went to ON_RESUME , application loadLibrary time -> 246 size: 3.39 MB <com.zhenxi.hunter:hunter_main_process>(59), >>>>>>>>>>>>> start main check thread(250), get hunter application success com.zhenxi.hunter.App(0), start iso server success!(1), start twin server success!(1), iso ipc thread heartbeat_request ter_iso_service(154), iso ipc thread start check,start count  0(3), start iso ipc check thread (0), check apk sign for iso 0(79), twin ipc thread heartbeat_request ter_server_twin(38), twin ipc thread start check,start count 0(2)] 
+application static start <com.zhenxi.hunter:hunter_main_process>(0)
+check hide api (0)
+application static start [com.zhenxi.hunter:hunter_main_process](0)
+application static start load lib (1)
+com.zhenxi.hunter:hunter_main_process JNI_OnLoad init base class success com.zhenxi.hunter:hunter_main_process(1)
+com.zhenxi.hunter:hunter_main_process JNI_OnLoad init base success -> [0](0)
+com.zhenxi.hunter:hunter_main_process JNI_OnLoad install_check_arch_seccomp success -> [0](0)
+com.zhenxi.hunter:hunter_main_process JNI_OnLoad install seccomp -> [0](0)
+com.zhenxi.hunter:hunter_main_process JNI_OnLoad check unidbg -> [0](0)
+com.zhenxi.hunter:hunter_main_process JNI_OnLoad start InitProperties  -> [0](0)
+com.zhenxi.hunter:hunter_main_process JNI_OnLoad init finish success   -> [0](0)
+anti hide api (9)
+App went to ON_CREATE 
+com.zhenxi.hunter:hunter_main_process JNI_OnLoad init lib path natives success -> [82](27)
+anti accessibility server (155)
+App went to ON_START 
+App went to ON_RESUME 
+application loadLibrary time -> 246 size: 3.39 MB <com.zhenxi.hunter:hunter_main_process>(59)
+>>>>>>>>>>>>> start main check thread(250)
+get hunter application success com.zhenxi.hunter.App(0)
+start iso server success!(1)
+start twin server success!(1)
+iso ipc thread heartbeat_request ter_iso_service(154)
+iso ipc thread start check,start count  0(3)
+start iso ipc check thread (0)
+check apk sign for iso 0(79)
+twin ipc thread heartbeat_request ter_server_twin(38)
+twin ipc thread start check,start count 0(2)
+}
+
+{title=Hunter ISO Service Event(33) 
+ risk=[application static start <com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service>(0), check hide api (0), application static start [com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service](0), application static start iso process (0), application static start load lib (0), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad init base class success com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service(5), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad init base success -> [0](0), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad install_check_arch_seccomp success -> [0](0), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad install seccomp -> [0](0), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad check unidbg -> [0](0), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad start InitProperties  -> [0](0), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad init finish success   -> [0](0), iso static init  success(9), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad init lib path natives success -> [9](0), com.zhenxi.hunter.ZhenxiServer onCreate_success (0), iso check is run process pid success(1), iso check Os.stat(1), iso check crc start (0), iso check crc end (0), start check apk sign 111(61), tee check apk sign start(47), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service start native sign check(53), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service start native sign get path finish(8), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service start native open base.apk success (2), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native check base64 success(2), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native check hex success(1), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native apk sign check open fd(8), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native apk sign check open success(2), com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native apk check fd path success(33), native check apk sign 222(2), creator check apk sign 333(24), ipc check apk sign 444(9), <com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service>check apk sign finish(1)] 
+application static start <com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service>(0)
+check hide api (0)
+application static start [com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service](0)
+application static start iso process (0)
+application static start load lib (0)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad init base class success com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service(5)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad init base success -> [0](0)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad install_check_arch_seccomp success -> [0](0)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad install seccomp -> [0](0)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad check unidbg -> [0](0)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad start InitProperties  -> [0](0)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad init finish success   -> [0](0)
+iso static init  success(9)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service JNI_OnLoad init lib path natives success -> [9](0)
+com.zhenxi.hunter.ZhenxiServer onCreate_success (0)
+iso check is run process pid success(1)
+iso check Os.stat(1)
+iso check crc start (0)
+iso check crc end (0)
+start check apk sign 111(61)
+tee check apk sign start(47)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service start native sign check(53)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service start native sign get path finish(8)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service start native open base.apk success (2)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native check base64 success(2)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native check hex success(1)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native apk sign check open fd(8)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native apk sign check open success(2)
+com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service native apk check fd path success(33)
+native check apk sign 222(2)
+creator check apk sign 333(24)
+ipc check apk sign 444(9)
+<com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service>check apk sign finish(1)
+}
+
+{title=Android 9.0 Hidden API has been enabled 
+ risk=[<com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service>,  The attempt to invoke @HideApi was successful, indicating the potential presence of Magisk on the current device.] 
+<com.zhenxi.hunter:hunter_server_iso:com.zhenxi.hunter.ZhenxiServer:hunter_iso_service>
+ The attempt to invoke @HideApi was successful, indicating the potential presence of Magisk on the current device.
+}
+
+{title=Android 9.0 Hidden API has been enabled 
+ risk=[<com.zhenxi.hunter:hunter_server_twin>,  The attempt to invoke @HideApi was successful, indicating the potential presence of Magisk on the current device.] 
+<com.zhenxi.hunter:hunter_server_twin>
+ The attempt to invoke @HideApi was successful, indicating the potential presence of Magisk on the current device.
+}
+
+{title=HunterCheckApkSignError 
+ risk=[check apk sign inode fail] 
+check apk sign inode fail
+}
+

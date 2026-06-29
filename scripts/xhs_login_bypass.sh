@@ -41,9 +41,6 @@ echo ""
 echo "[1/4] ADB 配置"
 $ADB_BIN -s "$SERIAL" root 2>&1 | tail -1
 sleep 3; maybe_wait
-adb_sh setenforce 0 2>/dev/null || true
-echo "  SELinux: $(adb_sh getenforce 2>/dev/null | tr -d '\r')"
-
 # goldfish 设备权限修复（ueventd.ranchu.rc 编译前的临时 patch）
 # goldfish_address_space / goldfish_sync 需要 0666 才能让 app 进程使用 GPU 渲染
 # 否则 mapper.adreno 崩溃 → System UI 无法启动
@@ -52,6 +49,9 @@ for dev in goldfish_address_space goldfish_sync goldfish_pipe; do
   adb_sh "[ -e /dev/$dev ] && chmod 0666 /dev/$dev" 2>/dev/null || true
 done
 echo "  goldfish 权限: $(adb_sh 'ls -la /dev/goldfish_* 2>/dev/null | awk "{print \$1, \$9}"' | tr '\r' ' ')"
+# SELinux 保持 Enforcing — Hunter SDK 会检测 permissive 状态并标记为"可能被 root"
+adb_sh setenforce 1 2>/dev/null || true
+echo "  SELinux: $(adb_sh getenforce 2>/dev/null | tr -d '\r')"
 
 # ─── 2. NQE trace 文件 ───
 
@@ -111,7 +111,7 @@ adb_sh dumpsys deviceidle whitelist "+$XHS_PKG" 2>/dev/null || true
 echo "  权限授予完成"
 
 # ─── 4. 启动日志抓取 ───
-
+rm -rf $LOG_DIR/*
 echo ""
 echo "[4/5] 启动后台日志抓取"
 

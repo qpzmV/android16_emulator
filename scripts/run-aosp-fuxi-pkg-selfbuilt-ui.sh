@@ -148,6 +148,7 @@ EMULATOR_ARGS=(
   -memory "$MEMORY_MB"
   -cores "$CORES"
   -no-metrics
+  -show-kernel
 )
 
 if [[ "$WIPE_DATA" == "1" ]]; then
